@@ -1,0 +1,10 @@
+
+State Machine - |boundFlasher|stateR
+Name stateR.110 stateR.101 stateR.100 stateR.011 stateR.010 stateR.001 stateR.000 
+stateR.000 0 0 0 0 0 0 0 
+stateR.001 0 0 0 0 0 1 1 
+stateR.010 0 0 0 0 1 0 1 
+stateR.011 0 0 0 1 0 0 1 
+stateR.100 0 0 1 0 0 0 1 
+stateR.101 0 1 0 0 0 0 1 
+stateR.110 1 0 0 0 0 0 1 

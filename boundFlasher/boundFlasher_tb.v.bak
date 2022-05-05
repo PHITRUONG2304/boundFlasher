@@ -1,0 +1,62 @@
+module boundFlasher_tb;
+  
+  parameter HALF_CYCLE = 5;
+  parameter CYCLE = HALF_CYCLE * 2;
+  
+  reg flick, clk, rst;
+  wire [15:0] led;
+  
+  boundFlasher dut(.flick(flick), .clk(clk), .rst(rst), .LEDs(led));
+    
+  //generate clock
+  always begin
+    clk = 1'b0;
+    #HALF_CYCLE clk = 1'b1;
+    #HALF_CYCLE;
+  end
+  
+  initial begin
+    rst = 0;		// second 0
+    flick = 0; 		// second 0
+    #2 rst = 1; 	// second 2
+
+	 //INITIAL
+	 //STATE_1: 60
+	 //STATE_2: 60
+	 //STATE_3: 110
+	 //STATE_4: 60
+	 //STATE_5: 110
+	 //FINAL: 160
+	 
+    // Test case :
+    #5 flick = 1;	// second 7		(Test case 1) Normal flow
+    #3 flick = 0;	// second 10
+	
+    #580 flick = 1; // second 590	(Test case 5) Flick signal to repeat the process
+    #3 flick = 0;	// second 593 - 595
+	 
+	 #173 flick = 1; // second 766 (Test case ) Flick signal to return the min value of previous state.
+	 #3 flick = 0;
+	 
+	 #166 flick = 1; // second 936 (Test case) Flick signal to return the min value of previous state.
+	 #3 flick = 0;
+//    #3 flick = 0;
+    #500 rst = 0;
+
+    //////////////////////////////  
+    #(CYCLE*45) $finish;
+  end
+  
+  // To see waveform in online EDA playground only
+//  initial begin
+//    $dumpfile("debug.vcd");
+//    $dumpvars;
+//  end
+  /////
+
+initial begin
+    $recordfile("waves");
+    $recordvars("depth=0", boundFlasher_tb);
+end
+
+endmodule
